@@ -6,10 +6,10 @@ import {
     ManyToOne as ManyToOne9,
 } from 'typeorm';
 import { ApiProperty as ApiProperty9 } from '@nestjs/swagger';
-import { PeopleRole as PeopleRole9 } from 'src/utils/enum';
+import { PeopleRole as PeopleRole9 } from '../../../utils/enum';
 import { JoinColumn as JoinColumn9 } from 'typeorm';
-import { MovieEntity } from 'src/moduls/movie/entity/movie.entity';
-import { PeopleEntity } from 'src/moduls/people/entity/people.entity';
+import { MovieEntity } from '../../../moduls/movie/entity/movie.entity';
+import { PeopleEntity } from '../../../moduls/people/entity/people.entity';
 
 /**
 * MoviePeople - junction table for Movie <-> People with role attribute
