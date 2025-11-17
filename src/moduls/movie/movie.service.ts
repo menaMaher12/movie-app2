@@ -25,15 +25,11 @@ export class MovieService {
         }
         const newMovie = this.movieRepository.create(movieData);
         return await this.movieRepository.save(newMovie);
-       
     }
 
     // update movie
     public async update(movieId: string, movieData: UpdateMovieDto): Promise<MovieEntity> {
         const movie = await this.getMovieById(movieId);
-        if(!movie){
-            throw new NotFoundException("Movie not Found");
-        }
         if(movie.title !== movieData.title || movie.posterUrl !== movieData.posterUrl || movie.videoUrl !== movieData.videoUrl){
             const existingMovie = await this.checkExistingMovie(movieData);
             if(existingMovie) {
@@ -98,5 +94,11 @@ export class MovieService {
         else{
             return false
         }
+    }
+
+    public async delete(movieId: string): Promise<{ message: string }> {
+        const movie = await this.getMovieById(movieId);
+        await this.movieRepository.remove(movie);
+        return { message: 'Movie deleted successfully' };
     }
 }

@@ -11,8 +11,8 @@ import {
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { MoviePeopleEntity } from '../../movie-people/entity/movie_people.entity';
-import { RatingEntity } from 'src/moduls/rating/entity/rating.entity';
-import { GenreEntity } from 'src/moduls/geners/entity/genre.entity';
+import { RatingEntity } from '../../../moduls/rating/entity/rating.entity';
+import { GenreEntity } from '../../../moduls/geners/entity/genre.entity';
 
 @Entity('movies')
 export class MovieEntity {
@@ -98,4 +98,5 @@ export class MovieEntity {
 
     @OneToMany(() => RatingEntity, (rating) => rating.movie)
     ratings: RatingEntity[];
+  id: any;
 }

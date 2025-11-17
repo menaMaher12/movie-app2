@@ -25,11 +25,11 @@ import { CreateMovieDto } from './dto/create.movie.dot';
 import { UpdateMovieDto } from './dto/update.movie.dto';
 import { MovieQueryDto } from './dto/movie.query.dto';
 import { MovieResponseDto } from './dto/movie.response.dto';
-import { UserRole } from 'src/utils/enum';
-import { Role } from 'src/common/decrators/user-role/user-role.decorator';
-import { AuthRoleGuard } from 'src/common/guards/role_guard/auth.role.guard';
+import { UserRole } from '../../utils/enum';
+import { Role } from '../../common/decrators/user-role/user-role.decorator';
+import { AuthRoleGuard } from '../../common/guards/role_guard/auth.role.guard';
 import { MovieEntity } from './entity/movie.entity';
-import { MovieListResponse, MovieSingleResponse } from 'src/interface/movie.interface';
+import { MovieListResponse, MovieSingleResponse } from '../../interface/movie.interface';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
 
 @ApiTags('Movies')
