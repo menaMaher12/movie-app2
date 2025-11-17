@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable prettier/prettier */
 /* eslint-disable prettier/prettier */
 import {
