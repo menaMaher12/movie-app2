@@ -8,7 +8,7 @@ import {
     OneToMany,
 } from 'typeorm';
 import { ApiProperty as ApiProperty4 } from '@nestjs/swagger';
-import { MoviePeopleEntity } from 'src/moduls/movie-people/entity/movie_people.entity';
+import { MoviePeopleEntity } from '../../../moduls/movie-people/entity/movie_people.entity';
 
 
 /** PeopleEntity - persons involved in movies (actors, directors, etc.) */

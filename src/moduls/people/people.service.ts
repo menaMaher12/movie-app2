@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 import { PeopleResponseDto } from './dto/people-response.dto';
 import { CreatePeopleDto } from './dto/create-people.dto';
 import { UpdatePeopleDto } from './dto/update-people.dto';
-import { PeopleQuery } from 'src/interface/people-interface-query';
+import { PeopleQuery } from '../../interface/people-interface-query';
 
 @Injectable()
 export class PeopleService {

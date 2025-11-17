@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { MoviePeopleEntity } from 'src/moduls/movie-people/entity/movie_people.entity';
+import { MoviePeopleEntity } from '../../../moduls/movie-people/entity/movie_people.entity';
 
 /**
  * DTO used for API responses when returning person details.
