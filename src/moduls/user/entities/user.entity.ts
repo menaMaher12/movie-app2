@@ -9,14 +9,14 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { CURRENT_TIMESTAMP } from 'src/utils/constants';
-import { SubscriptionType, UserRole } from 'src/utils/enum';
+import { CURRENT_TIMESTAMP } from '../../../utils/constants';
+import { SubscriptionType, UserRole } from '../../../utils/enum';
 
 import { Exclude } from 'class-transformer';
-import { RatingEntity } from 'src/moduls/rating/entity/rating.entity';
-import { PaymentEntity } from 'src/moduls/payment/entity/payment.entity';
-import { SubscriptionEntity } from 'src/moduls/subscription/entity/subscription.entity';
-import { UserCouponsEntity } from 'src/moduls/user-coupon/entity/user_coupons.entity';
+import { RatingEntity } from '../../../moduls/rating/entity/rating.entity';
+import { PaymentEntity } from '../../../moduls/payment/entity/payment.entity';
+import { SubscriptionEntity } from '../../../moduls/subscription/entity/subscription.entity';
+import { UserCouponsEntity } from '../../../moduls/user-coupon/entity/user_coupons.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity {

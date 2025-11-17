@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsEnum, Matches, IsOptional, IsString, Length} from 'class-validator';
-import { SubscriptionType, UserRole } from 'src/utils/enum';
+import { SubscriptionType, UserRole } from '../../../utils/enum';
 
 // ===== Regex Patterns =====
 const nameRegex = /^[a-zA-Z\s]+$/;

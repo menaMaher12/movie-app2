@@ -27,15 +27,15 @@ import { UserService } from './user.service';
 import { UserEntity } from './entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { uploadOptions } from 'src/utils/upload.options';
-import type { JwtPayloadType } from 'src/utils/types';
+import { uploadOptions } from '../../utils/upload.options';
+import type { JwtPayloadType } from '../../utils/types';
 import type { Response } from 'express';
-import { AuthGuard } from 'src/common/guards/auth_guard/auth.guard';
-import { CurrentUser } from 'src/common/decrators/currentuser/currentuser.decorator';
-import { UserRole } from 'src/utils/enum';
-import { Role } from 'src/common/decrators/user-role/user-role.decorator';
-import { AuthRoleGuard } from 'src/common/guards/role_guard/auth.role.guard';
-import { RespExcludeInterceptor } from 'src/common/interceptor/resp-exclude/resp-exclude.interceptor';
+import { AuthGuard } from '../../common/guards/auth_guard/auth.guard';
+import { CurrentUser } from '../../common/decrators/currentuser/currentuser.decorator';
+import { UserRole } from '../../utils/enum';
+import { Role } from '../../common/decrators/user-role/user-role.decorator';
+import { AuthRoleGuard } from '../../common/guards/role_guard/auth.role.guard';
+import { RespExcludeInterceptor } from '../../common/interceptor/resp-exclude/resp-exclude.interceptor';
 @ApiTags('User')
 @Controller('api/v1/users')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
@@ -67,16 +67,16 @@ export class UserController {
   @UseGuards(AuthRoleGuard)
   // @UseInterceptors(RespExcludeInterceptor)
   // @UseInterceptors(ClassSerializerInterceptor)
-  async getAllUsers(@Query() query: any): Promise<{ success: boolean; message: string; data: UserEntity[]  ; total: number ; pages : number}> {
-    const users = await this.userService.findAll(query);
+  async getAllUsers(@Query() query: any): Promise<{ success: boolean; message: string; data: UserEntity[]  ; totalPerPage: number ; pages : number}> {
+    const { data: users, total } = await this.userService.findAll(query);
 
     return {
       success: true,
       message: 'Users fetched successfully',
       data: users,
-      total: users.length,
+      totalPerPage: users.length,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      pages : query?.limit ? Math.ceil(users.length / query.limit) : 1,
+      pages : query?.limit ? Math.ceil(total / query.limit) : 1,
     };
   }
 
@@ -87,13 +87,12 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'User found', type: UserEntity })
   @ApiResponse({ status: 404, description: 'User not found' })
   @UseInterceptors(RespExcludeInterceptor)
+  @Role(UserRole.ADMIN , UserRole.MODERATOR , UserRole.USER)
+  @UseGuards(AuthRoleGuard)
   async getUserById(
     @Param('id') id:string,
   ): Promise<{ success: boolean; message: string; data: UserEntity }> {
     const user = await this.userService.findById(id);
-    if (!user) {
-      throw new NotFoundException(`User with ID ${id} not found`);
-    }
     return {
       success: true,
       message: 'User fetched successfully',
