@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from "@nestjs/swagger";
-import { MovieEntity } from "src/moduls/movie/entity/movie.entity";
-import { CURRENT_TIMESTAMP } from "src/utils/constants";
+import { MovieEntity } from "../../../moduls/movie/entity/movie.entity";
+import { CURRENT_TIMESTAMP } from "../../../utils/constants";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
