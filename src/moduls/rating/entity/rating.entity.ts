@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from "@nestjs/swagger";
-import { MovieEntity } from "src/moduls/movie/entity/movie.entity";
-import { UserEntity } from "src/moduls/user/entities/user.entity";
+import { MovieEntity } from "../../../moduls/movie/entity/movie.entity";
+import { UserEntity } from "../../../moduls/user/entities/user.entity";
 
-import { CURRENT_TIMESTAMP } from "src/utils/constants";
+import { CURRENT_TIMESTAMP } from "../../../utils/constants";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: "ratings" })
