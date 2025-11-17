@@ -3,15 +3,15 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { RatingService } from './rating.service';
 
-import { UserRole } from 'src/utils/enum';
-import type { JwtPayloadType } from 'src/utils/types';
+import { UserRole } from '../../utils/enum';
+import type { JwtPayloadType } from '../../utils/types';
 import { CreateRatingDto } from './dto/create.rating.dot';
 import { ApiParam, ApiProperty, ApiResponse } from '@nestjs/swagger';
 import { UpdateRatingDto } from './dto/update.rating.dto';
-import { RatingListResponse, RatingSingleResponse } from 'src/interface/rating.interface';
-import { Role } from 'src/common/decrators/user-role/user-role.decorator';
-import { AuthRoleGuard } from 'src/common/guards/role_guard/auth.role.guard';
-import { CurrentUser } from 'src/common/decrators/currentuser/currentuser.decorator';
+import { RatingListResponse, RatingSingleResponse } from '../../interface/rating.interface';
+import { Role } from '../../common/decrators/user-role/user-role.decorator';
+import { AuthRoleGuard } from '../../common/guards/role_guard/auth.role.guard';
+import { CurrentUser } from '../../common/decrators/currentuser/currentuser.decorator';
 @Controller('api/v1/rating')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
 export class RatingController {

@@ -12,14 +12,14 @@ import {
     NotFoundException,
     Patch,
 } from '@nestjs/common';
-import { Role } from 'src/common/decrators/user-role/user-role.decorator';
-import { AuthRoleGuard } from 'src/common/guards/role_guard/auth.role.guard';
+import { Role } from '../../common/decrators/user-role/user-role.decorator';
+import { AuthRoleGuard } from '../../common/guards/role_guard/auth.role.guard';
 import { PeopleService } from './people.service';
-import { UserRole } from 'src/utils/enum';
+import { UserRole } from '../../utils/enum';
 import { CreatePeopleDto } from './dto/create-people.dto';
 import { UpdatePeopleDto } from './dto/update-people.dto';
 import { PeopleResponseDto } from './dto/people-response.dto';
-import * as peopleInterfaceQuery from 'src/interface/people-interface-query';
+import * as peopleInterfaceQuery from '../../interface/people-interface-query';
 
 @Controller('api/v1/people')
 @UseGuards(AuthRoleGuard)

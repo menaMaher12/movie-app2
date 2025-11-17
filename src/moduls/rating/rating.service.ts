@@ -11,8 +11,8 @@ import { Between, Like, Repository } from 'typeorm';
 
 import { CreateRatingDto } from './dto/create.rating.dot';
 import { UpdateRatingDto } from './dto/update.rating.dto';
-import { JwtPayloadType } from 'src/utils/types';
-import { UserRole } from 'src/utils/enum';
+import { JwtPayloadType } from '../../utils/types';
+import { UserRole } from '../../utils/enum';
 import { MovieService } from '../movie/movie.service';
 import { UserService } from '../user/user.service';
 

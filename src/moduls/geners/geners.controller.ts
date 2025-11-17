@@ -13,9 +13,9 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { GenersService } from './geners.service';
-import { AuthRoleGuard } from 'src/common/guards/role_guard/auth.role.guard';
-import { Role } from 'src/common/decrators/user-role/user-role.decorator';
-import { UserRole } from 'src/utils/enum';
+import { AuthRoleGuard } from '../../common/guards/role_guard/auth.role.guard';
+import { Role } from '../../common/decrators/user-role/user-role.decorator';
+import { UserRole } from '../../utils/enum';
 import { CreateGenreDto } from './dto/create.geners.dot';
 import { UpdateGenreDto } from './dto/update.geners.dto';
 import { GenreEntity } from './entity/genre.entity';

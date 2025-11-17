@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { PeopleRole } from 'src/utils/enum';
-import { MovieEntity } from 'src/moduls/movie/entity/movie.entity';
-import { PeopleEntity } from 'src/moduls/people/entity/people.entity';
+import { PeopleRole } from '../../../utils/enum';
+import { MovieEntity } from '../../../moduls/movie/entity/movie.entity';
+import { PeopleEntity } from '../../../moduls/people/entity/people.entity';
 
 /**
  * Response DTO for returning Movie-People relationship details.

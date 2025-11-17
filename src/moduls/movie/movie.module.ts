@@ -5,7 +5,7 @@ import { MovieService } from './movie.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { MovieEntity } from './entity/movie.entity';
-import { loggerMiddleware } from 'src/common/middleware/logger.middleware';
+import { loggerMiddleware } from '../../common/middleware/logger.middleware';
 
 @Module({
   controllers: [MovieController],

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum } from "class-validator";
-import { PeopleRole } from "src/utils/enum";
+import { PeopleRole } from "../../../utils/enum";
 
 export class CreateMoviePeopleDto {
 

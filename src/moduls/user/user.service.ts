@@ -11,8 +11,8 @@ import { UpdateUserDto } from './dto/update.user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { JwtPayloadType } from 'src/utils/types';
-import { UserRole } from 'src/utils/enum';
+import { JwtPayloadType } from '../../utils/types';
+import { UserRole } from '../../utils/enum';
 import { AuthProvider } from './auth.provider';
 import { join } from 'node:path';
 import { unlinkSync } from 'node:fs';
@@ -37,10 +37,10 @@ export class UserService {
   }
 
   // Get All Users
-  public async findAll(query: any): Promise<UserEntity[]> {
+  public async findAll(query: any): Promise<{ data: UserEntity[]; total: number }> {
     const filters: any = {
-      ...(query?.firstname ? { firstName: query.firstname } : {}),
-      ...(query?.lastname ? { lastName: query.lastname } : {}),
+      ...(query?.firstName ? { firstName: query.firstName } : {}),
+      ...(query?.lastName ? { lastName: query.lastName } : {}),
       ...(query?.email ? { email: Like(`%${query.email}%`) } : {}),
       ...(query?.role ? { role: query.role } : {}),
       ...(query?.isVerified !== undefined ? { isVerified: query.isVerified } : {}),
@@ -52,13 +52,13 @@ export class UserService {
     }
     const skipPage: number | undefined = query?.page && query?.limit ? (query.page - 1) * query.limit : undefined;
     const numUserPerPage: number | undefined = query?.limit ? query.limit : undefined;
-    const users = await this.userRepo.find({
+    const [users, total] = await this.userRepo.findAndCount({
       where: filters,
       order: sort,
       skip: skipPage,
       take: numUserPerPage,
     });
-    return users;
+    return { data: users, total };
   }
 
   // Get One User by ID
