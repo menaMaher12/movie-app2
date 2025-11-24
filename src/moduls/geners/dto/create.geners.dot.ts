@@ -1,5 +1,29 @@
 /* eslint-disable prettier/prettier */
 
+/**
+ * [
+  {
+    "name": "Action",
+    "description": "High energy scenes, fights, and intense moments"
+  },
+  {
+    "name": "Romance",
+    "description": "Stories centered around love and emotional relationships"
+  },
+  {
+    "name": "Science Fiction",
+    "description": "Futuristic concepts, advanced technology, and imaginative worlds"
+  },
+  {
+    "name": "Comedy",
+    "description": "Light-hearted stories designed to entertain and make viewers laugh"
+  },
+  {
+    "name": "Horror",
+    "description": "Scary and suspenseful content that aims to create fear"
+  }
+]
+ */
 import { ApiProperty } from "@nestjs/swagger";
 import { IsOptional, IsString, Length } from "class-validator";
 
