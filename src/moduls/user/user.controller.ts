@@ -36,7 +36,7 @@ import { Role } from '../../common/decrators/user-role/user-role.decorator';
 import { AuthRoleGuard } from '../../common/guards/role_guard/auth.role.guard';
 import { RespExcludeInterceptor } from '../../common/interceptor/resp-exclude/resp-exclude.interceptor';
 @ApiTags('User')
-@Controller('api/v1/users')
+@Controller('users')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
 export class UserController {
   constructor(private readonly userService: UserService ,private readonly configService: ConfigService) {}
@@ -196,12 +196,13 @@ export class UserController {
   // upload user image
   @Post('upload-image')
   @UseGuards(AuthGuard)
+  @Role(UserRole.ADMIN , UserRole.MODERATOR , UserRole.USER)
   @UseInterceptors(FileInterceptor("user_image", uploadOptions))
   async uploadUserImage(@UploadedFile() file: Express.Multer.File , @CurrentUser() payload: JwtPayloadType): Promise<{ success: boolean; message: string; data: string }> {
     if (!file) {
       throw new NotFoundException('File not uploaded');
     }
-
+    console.log('Uploaded file:', file);
     const user = await this.userService.setProfileImage(payload.userId, file.filename);
     if (!user) {
       throw new NotFoundException('User not found');
