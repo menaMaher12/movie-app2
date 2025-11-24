@@ -1,54 +1,41 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { SubscriptionType } from 'src/utils/enum';
-import { PaymentEntity } from 'src/moduls/payment/entity/payment.entity';
-import { UserEntity } from 'src/moduls/user/entities/user.entity';
+import { UserEntity } from '../../user/entities/user.entity';
+import { PaymentEntity } from '../../payment/entity/payment.entity';
+import { SubscriptionPlanEntity } from '../../../moduls/subscription-plan/entity/subscription-plan.entity';
+import { CouponEntity } from '../../../moduls/coupon/entity/coupon.entity';
 
-/**
- * DTO for returning subscription details in API responses.
- */
 export class SubscriptionResponseDto {
-  @ApiProperty({ example: 's1a2b3c4-...', description: 'Subscription UUID' })
+  @ApiProperty({ example: 's1a2b3c4-....', description: 'Subscription UUID' })
   subscription_id: string;
 
-  @ApiProperty({
-    enum: SubscriptionType,
-    example: SubscriptionType.BASIC,
-    description: 'Subscription plan name',
-  })
-  plan_name: SubscriptionType;
-
-  @ApiProperty({ example: 9.99, description: 'Price in USD' })
-  price: number;
-
-  @ApiProperty({ example: '2025-10-01', description: 'Start date (YYYY-MM-DD)' })
-  start_date: string;
-
-  @ApiProperty({
-    example: '2026-10-01',
-    description: 'End date (YYYY-MM-DD)',
-    required: false,
-  })
-  end_date?: string;
-
-  @ApiProperty({ example: true, description: 'Is the subscription active?' })
+  @ApiProperty({ example: true, description: 'Indicates whether the subscription is active' })
   is_active: boolean;
 
-  @ApiProperty({
-    example: '2025-10-01T00:00:00Z',
-    description: 'Creation timestamp (UTC)',
-  })
+  @ApiProperty({ example: '2025-10-01', description: 'Subscription start date', required: false })
+  start_date?: Date;
+
+  @ApiProperty({ example: '2026-10-01', description: 'Subscription end date', required: false })
+  end_date?: Date;
+
+  @ApiProperty({ example: '2025-10-01T00:00:00Z', description: 'Creation timestamp' })
   created_at: Date;
 
-  @ApiProperty({
-    type: () => UserEntity,
-    description: 'User associated with this subscription',
-  })
+  @ApiProperty({ description: 'User associated with this subscription', type: () => UserEntity })
   user: UserEntity;
 
-  @ApiProperty({
-    type: () => [PaymentEntity],
-    description: 'List of payments associated with this subscription',
-  })
-  payments: PaymentEntity[];
+  @ApiProperty({ description: 'Plan associated with this subscription', type: () => SubscriptionPlanEntity })
+  plan: SubscriptionPlanEntity;
+
+  @ApiProperty({ description: 'Payments associated with this subscription', type: () => [PaymentEntity], required: false })
+  payments?: PaymentEntity[];
+
+  @ApiProperty({ description: 'Coupon applied to this subscription', type: () => CouponEntity, required: false })
+  coupon?: CouponEntity;
+
+  @ApiProperty({ example: 2.5, description: 'Amount discounted by coupon', required: false })
+  discount_amount?: number;
+
+  @ApiProperty({ example: 7.49, description: 'Final subscription price after applying coupon' })
+  final_price: number;
 }
