@@ -23,7 +23,7 @@ export class UserCouponService {
   /** Use a coupon for a user (redeem it once) */
   public async useCoupon(userId: string, couponCode: string): Promise<UserCouponsEntity> {
     // 1. Find coupon by code
-    const coupon = await this.couponService.findCouponByCode(couponCode);
+    const coupon = await this.couponService.getCoupon(couponCode);
     if (!coupon) throw new NotFoundException('Coupon not found');
 
     // 2. Find user
