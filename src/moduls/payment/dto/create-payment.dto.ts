@@ -17,7 +17,8 @@ export class CreatePaymentDto {
     @ApiProperty({ example: 9.99, description: 'Payment amount in USD' })
     @IsNumber({}, { message: 'amount must be a number' })
     @Min(0.01, { message: 'amount must be greater than zero' })
-    amount: number;
+    @IsOptional()
+    amount?: number;
 
     @ApiProperty({
         enum: PaymentMethod,
@@ -62,4 +63,13 @@ export class CreatePaymentDto {
     })
     billing_cycle?: string;
 
+    @ApiProperty({
+        example: 'sub_123456',
+        description: 'Associated subscription ID',
+    })
+    @IsString({ message: 'subscriptionId must be a string' })
+    @Length(1, 255, {
+        message: 'subscriptionId must be between 1 and 255 characters',
+    })
+    subscriptionId: string;
 }
