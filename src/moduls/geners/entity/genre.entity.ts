@@ -2,7 +2,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { MovieEntity } from "../../../moduls/movie/entity/movie.entity";
 import { CURRENT_TIMESTAMP } from "../../../utils/constants";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
 @Entity({ name: "geners" })
@@ -48,8 +48,7 @@ export class GenreEntity {
     @DeleteDateColumn({ type: 'timestamp', nullable: true })
     deletedAt?: Date;
 
-    @ApiProperty({ example: 'Movies associated with the genre', description: 'Movies associated with the genre' })
-    @ManyToMany(() => MovieEntity, (movie) => movie.genres ,{nullable:true })
-    @JoinTable({ name: "movie_genres" })
+    @ApiProperty({ example: 'Movies associated with the genre', description: 'Movies associated with the genre', type: () => [MovieEntity] }   )
+    @ManyToMany(() => MovieEntity, (movie) => movie.genres )
     movies: MovieEntity[];
 }
