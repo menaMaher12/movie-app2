@@ -1,58 +1,23 @@
 /* eslint-disable prettier/prettier */
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import {
-    IsEnum,
-    IsNumber,
-    IsDateString,
-    IsBoolean,
-    IsOptional,
-    Min,
-} from 'class-validator';
-import { SubscriptionType } from 'src/utils/enum';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsUUID, IsOptional, IsString, Length, IsNotEmpty } from 'class-validator';
 
-/**
- * DTO for creating a new subscription.
- */
 export class CreateSubscriptionDto {
-    @ApiProperty({
-        enum: SubscriptionType,
-        example: SubscriptionType.BASIC,
-        description: 'Type of subscription plan (e.g., BASIC, PREMIUM, VIP)',
-    })
-    @IsEnum(SubscriptionType, {
-        message: `plan_name must be one of: ${Object.values(SubscriptionType).join(', ')}`,
-    })
-    plan_name: SubscriptionType;
+  @ApiProperty({
+    example: 'f2a4d8e3-4c91-11ee-be56-0242ac120002',
+    description: 'UUID of the subscription plan the user wants to subscribe to',
+  })
+  @IsUUID('4', { message: 'plan_id must be a valid UUID' })
+  @IsNotEmpty({ message: 'plan_id is required' })
+  plan_id: string;
 
-    @ApiProperty({
-        example: 9.99,
-        description: 'Subscription price in USD',
-    })
-    @IsNumber({}, { message: 'price must be a number' })
-    @Min(0, { message: 'price must be a positive number' })
-    price: number;
-
-    @ApiProperty({
-        example: '2025-10-01',
-        description: 'Subscription start date (YYYY-MM-DD)',
-    })
-    @IsDateString({}, { message: 'start_date must be a valid ISO date string' })
-    start_date: string;
-
-    @ApiPropertyOptional({
-        example: '2026-10-01',
-        description: 'Subscription end date (YYYY-MM-DD)',
-    })
-    @IsOptional()
-    @IsDateString({}, { message: 'end_date must be a valid ISO date string' })
-    end_date?: string;
-
-    @ApiPropertyOptional({
-        example: true,
-        description: 'Indicates whether the subscription is active',
-        default: true,
-    })
-    @IsOptional()
-    @IsBoolean({ message: 'is_active must be a boolean value' })
-    is_active?: boolean;
+  @ApiProperty({
+    example: 'SAVE10',
+    description: 'Coupon code to apply to this subscription (optional)',
+    required: false,
+  })
+  @IsOptional()
+  @IsString({ message: 'coupon_code must be a string' })
+  @Length(1, 50, { message: 'coupon_code length must be between 1 and 50 characters' })
+  coupon_code?: string;
 }
