@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable prettier/prettier */
@@ -100,7 +102,7 @@ export class RatingService {
     }
 
     // get all ratings
-    public async getAllRatings(query): Promise<RatingEntity[]> {
+    public async getAllRatings(query): Promise<{ ratings: RatingEntity[]; total: number; pages: number }> {
         const filter ={
             ...(query?.user_id ? { user: { user_id: query.user_id } } : {}),
             ...(query?.movie_id ? { movie: { movie_id: query.movie_id } } : {}),
@@ -114,7 +116,7 @@ export class RatingService {
                 ? { [query.sortBy]: query.sortOrder === 'DESC' ? 'DESC' : 'ASC' }
                 : { rating_id: 'ASC' }
         );
-        const ratings = await this.ratingRepository.find({
+        const [ratings, total] = await this.ratingRepository.findAndCount({
             where: filter,
             order: sort as any,
             relations: ['user' ,"movie"], // Include user and movie relations if needed
@@ -122,6 +124,10 @@ export class RatingService {
         if (ratings.length == 0) {
             throw new NotFoundException('Ratings not found');
         }
-        return ratings;
+        return {
+            ratings,
+            total,
+            pages: query?.limit ? Math.ceil(total / parseInt(query.limit)) : 1
+        };
     }
 }
