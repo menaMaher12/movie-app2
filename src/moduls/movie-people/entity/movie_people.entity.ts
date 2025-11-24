@@ -30,12 +30,12 @@ export class MoviePeopleEntity {
     @Column9({ type: 'enum', enum: PeopleRole9 , default: PeopleRole9.ACTOR })
     role: PeopleRole9;
 
-    @ApiProperty9({ description: 'Movie associated with the person' })
+    @ApiProperty9({ description: 'Movie associated with the person' , type: () => MovieEntity })
     @ManyToOne9(() => MovieEntity, { onDelete: 'CASCADE' })
     @JoinColumn9({ name: 'movie_id' })
     movie: MovieEntity;
 
-    @ApiProperty9({ description: 'Person associated with the movie' })
+    @ApiProperty9({ description: 'Person associated with the movie' , type: () => PeopleEntity })
     @ManyToOne9(() => PeopleEntity, { onDelete: 'CASCADE' })
     @JoinColumn9({ name: 'person_id' })
     person: PeopleEntity;
