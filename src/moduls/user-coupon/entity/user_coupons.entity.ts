@@ -35,7 +35,7 @@ export class UserCouponsEntity {
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 
-  @ManyToOne(() => CouponEntity, (coupon) => coupon.userCoupons, { onDelete: 'CASCADE' })
+  @ManyToOne(() => CouponEntity, (coupon) => coupon.couponuser, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'coupon_id' })
   coupon: CouponEntity;
 }
