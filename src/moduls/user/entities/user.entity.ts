@@ -35,12 +35,12 @@ export class UserEntity {
   @Column({ type: 'varchar', length: 100 })
   lastName: string;
 
-  // @ApiProperty({ example: 'mina123', description: 'Unique username for the user' })
-  // @Column({ type: 'varchar', length: 50, unique: true })
-  // username :string;
+  @ApiProperty({ example: 'mina123', description: 'Unique username for the user' })
+  @Column({ type: 'varchar', length: 50, unique: true })
+  username :string;
 
   @ApiProperty({ example: '+201112345678', description: 'Phone number', required: false })
-  @Column({ type: 'varchar', length: 15, nullable: true })
+  @Column({ type: 'varchar', length: 15, nullable: true ,unique: true })
   phone?: string;
 
   @ApiProperty({ example: 'mina@example.com', description: 'Unique email address' })
@@ -97,15 +97,19 @@ export class UserEntity {
   @DeleteDateColumn({ type: 'timestamp', nullable: true })
   deletedAt?: Date;
 
+  @ApiProperty({ description: 'Ratings given by the user', type: () => [RatingEntity] })
   @OneToMany(() => RatingEntity, (rating) => rating.user)
   ratings: RatingEntity[];
 
+  @ApiProperty({ description: 'Payments made by the user', type: () => [PaymentEntity] })
   @OneToMany(() => PaymentEntity, (payment) => payment.user)
   payments: PaymentEntity[];
 
+  @ApiProperty({ description: 'Subscriptions of the user', type: () => [SubscriptionEntity] })
   @OneToMany(() => SubscriptionEntity, (subscription) => subscription.user)
   subscriptions: SubscriptionEntity[];
 
+  @ApiProperty({ description: 'Coupons associated with the user', type: () => [UserCouponsEntity] })
   @OneToMany(() => UserCouponsEntity, (userCoupon) => userCoupon.user)
   userCoupons: UserCouponsEntity[];
 }
