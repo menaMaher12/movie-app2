@@ -11,7 +11,7 @@ import { MailService } from "../mail/mail.service";
 export class AuthProvider {
     // This class can be expanded to include methods for authentication and authorization
     // Register or Signup User
-    constructor(@InjectRepository(UserEntity) private readonly userRepo: Repository<UserEntity> ,private mailService: MailService) { }
+    constructor(@InjectRepository(UserEntity) private readonly userRepo: Repository<UserEntity>, private mailService: MailService) { }
     public async register(user: CreateUserDto): Promise<{ userId: string; email: string, role: string }> {
         const { email, password } = user;
         const existingUser = await this.userRepo.findOne({ where: { email } });
@@ -34,20 +34,20 @@ export class AuthProvider {
         if (!user) {
             throw new NotFoundException(`User with email ${email} not found`);
         }
-        if(user.isVerified === false) {
-           let verification  =user.verificationToken ;
-           if(!verification) {
+        if (user.isVerified === false) {
+            let verification = user.verificationToken;
+            if (!verification) {
                 verification = randomBytes(32).toString('hex');
                 user.verificationToken = verification;
                 await this.userRepo.save(user);
-           }
-           try {
-                await this.mailService.sendVerificationEmail(user.email,user.firstName, verification);
-           }
-           catch (error) {
+            }
+            try {
+                await this.mailService.sendVerificationEmail(user.email, user.firstName, verification);
+            }
+            catch (error) {
                 console.error('Error sending verification email:', error);
-           }
-           throw new NotFoundException(`Email not verified. A new verification email has been sent to ${email}`);
+            }
+            throw new NotFoundException(`Email not verified. A new verification email has been sent to ${email}`);
         }
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
