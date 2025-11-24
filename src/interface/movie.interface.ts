@@ -11,12 +11,15 @@ export class MovieListResponse {
   @ApiProperty({ example: 'Movie fetched successfully', description: 'Response message' })
   message: string;
   @ApiProperty({ example: 10, description: 'Total number of movies' })
-  count: number;
+  total: number;
   @ApiProperty({
     type: () => [MovieEntity],
     description: 'Array of movie objects',
   })
   movies: MovieEntity[];
+
+  @ApiProperty({ example: 5, description: 'Total number of pages' })
+  pages: number;
 }
 
 export class MovieSingleResponse {
