@@ -27,4 +27,24 @@ export class MailService {
             context: { name: name, verificationLink: verificationLink }
         });
     }
+
+    public async sendReminderSubscriptionEmail(email: string, name: string, daysLeft: number): Promise<void> {
+        await this.mailService.sendMail({
+            to: email,
+            from: 'noreply@yourdomain.com',
+            subject: 'Subscription Expiry Reminder',
+            template: 'remindersubscriptiontemplate',
+            context: { name: name, daysLeft: daysLeft }
+        });
+    }
+
+    public async sendPaymentReceiptEmail(email: string, orderId: string, amount: string): Promise<void> {
+        await this.mailService.sendMail({
+            to: email,
+            from: 'noreply@yourdomain.com',
+            subject: 'Payment Receipt',
+            template: 'paymentreceipttemplate',
+            context: { orderId: orderId, amount: amount }
+        });
+    }
 }
