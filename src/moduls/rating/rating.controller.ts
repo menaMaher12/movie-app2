@@ -12,7 +12,7 @@ import { RatingListResponse, RatingSingleResponse } from '../../interface/rating
 import { Role } from '../../common/decrators/user-role/user-role.decorator';
 import { AuthRoleGuard } from '../../common/guards/role_guard/auth.role.guard';
 import { CurrentUser } from '../../common/decrators/currentuser/currentuser.decorator';
-@Controller('api/v1/rating')
+@Controller('rating')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
 export class RatingController {
     // Controller methods will be implemented here
@@ -35,7 +35,7 @@ export class RatingController {
         type: ()=> RatingSingleResponse,
     })
     @Post(":movie_id")
-    @Role(UserRole.USER ,UserRole.ADMIN)
+    @Role(UserRole.USER)
     @UseGuards(AuthRoleGuard)
     async createRating(
         @Param('movie_id') movie_id: string,
@@ -85,12 +85,13 @@ export class RatingController {
 
     // rating especial sing movie 
     @Get("movie/:movie_id")
-    async getRatings(@Param('movie_id') movie_id: string): Promise<RatingListResponse> {
+    async getRatings(@Param('movie_id') movie_id: string ): Promise<RatingListResponse> {
         const ratings = await this.ratingService.getRatingsByMovieId(movie_id);
         return {
             success: true,
             message: 'Ratings retrieved successfully',
-            count: ratings.length,
+            total: ratings.length,
+            pages: 1,
             data: ratings,
         };
     }
@@ -112,13 +113,14 @@ export class RatingController {
     @Get()
     @Role(UserRole.ADMIN)
     @UseGuards(AuthRoleGuard)
-    async getAllRatings(@Query() query): Promise<RatingListResponse> {
-        const ratings = await this.ratingService.getAllRatings(query);
+    async getAllRatings(@Query() query:any): Promise<RatingListResponse> {
+        const data = await this.ratingService.getAllRatings(query);
         return {
             success: true,
             message: 'Ratings retrieved successfully',
-            count: ratings.length,
-            data: ratings,
+            data: data.ratings,
+            total: data.total,
+            pages: data.pages,
         };
     }
 
