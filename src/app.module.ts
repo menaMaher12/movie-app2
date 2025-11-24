@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable prettier/prettier */
-import { ClassSerializerInterceptor, MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MovieModule } from './moduls/movie/movie.module';
@@ -32,7 +32,10 @@ import { MoviePeopleModule } from './moduls/movie-people/movie-people.module';
 import { loggerMiddleware } from './common/middleware/logger.middleware';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { CloudinaryModule } from './moduls/cloudinary/cloudinary.module';
-
+import { SubscriptionPlanModule } from './moduls/subscription-plan/subscription-plan.module';
+import { SubscriptionPlanEntity } from './moduls/subscription-plan/entity/subscription-plan.entity';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CustomClassSerializerInterceptor } from './common/interceptor/CustomClassSerializerInterceptor';
 @Module({
   imports: [
     MovieModule,
@@ -46,10 +49,12 @@ import { CloudinaryModule } from './moduls/cloudinary/cloudinary.module';
     SubscriptionModule,
     PaymentModule,
     PeopleModule,
+    SubscriptionPlanModule,
+    ScheduleModule.forRoot(), // Enable scheduling module
     ThrottlerModule.forRoot([
         {
           name:'default',
-          ttl:60000,  // time to live is 60 seconds
+          ttl:600,  // time to live is 60 seconds
           limit:10
         },
         {
@@ -89,6 +94,7 @@ import { CloudinaryModule } from './moduls/cloudinary/cloudinary.module';
             SubscriptionEntity,
             PaymentEntity,
             CouponEntity,
+            SubscriptionPlanEntity,
             UserCouponsEntity,
             RatingEntity,
           ],
@@ -107,7 +113,7 @@ import { CloudinaryModule } from './moduls/cloudinary/cloudinary.module';
   controllers: [AppController],
   providers: [AppService,{
     provide :APP_INTERCEPTOR,
-    useClass : ClassSerializerInterceptor
+    useClass : CustomClassSerializerInterceptor
   },{
     provide : APP_GUARD ,
     useClass : ThrottlerGuard
