@@ -1,60 +1,65 @@
 /* eslint-disable prettier/prettier */
 import {
-    Entity as Entity6,
-    PrimaryGeneratedColumn as PrimaryGeneratedColumn6,
-    Column as Column6,
-    CreateDateColumn as CreateDateColumn6,
-    ManyToOne,
-    OneToMany,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  ManyToOne,
+  OneToMany,
+  JoinColumn,
 } from 'typeorm';
-import { ApiProperty as ApiProperty6 } from '@nestjs/swagger';
-import { SubscriptionType } from '../../../utils/enum';
-import { UserEntity } from '../../../moduls/user/entities/user.entity';
-import { PaymentEntity } from '../../../moduls/payment/entity/payment.entity';
+import { ApiProperty } from '@nestjs/swagger';
+import { UserEntity } from '../../user/entities/user.entity';
+import { PaymentEntity } from '../../payment/entity/payment.entity';
+import { SubscriptionPlanEntity } from '../../../moduls/subscription-plan/entity/subscription-plan.entity';
+import { CouponEntity } from '../../../moduls/coupon/entity/coupon.entity';
 
-
-/** SubscriptionEntity - user subscription records */
-@Entity6({ name: 'subscriptions' })
+@Entity({ name: 'subscriptions' })
 export class SubscriptionEntity {
-    @ApiProperty6({ example: 's1a2b3c4-....', description: 'Subscription UUID' })
-    @PrimaryGeneratedColumn6('uuid')
-    subscription_id: string;
+  @ApiProperty({ example: 's1a2b3c4-....', description: 'Subscription UUID' })
+  @PrimaryGeneratedColumn('uuid')
+  subscription_id: string;
 
+  @ApiProperty({ example: true, description: 'Indicates if the subscription is active' })
+  @Column({ type: 'boolean', default: false })
+  is_active: boolean;
 
-    @ApiProperty6({ enum: SubscriptionType, example: SubscriptionType.BASIC, description: 'Plan name' })
-    @Column6({ type: 'enum', enum: SubscriptionType, default: SubscriptionType.BASIC })
-    plan_name: SubscriptionType;
+  @ApiProperty({ example: '2025-10-01', description: 'Subscription start date', required: false })
+  @Column({ type: 'date', nullable: true, default: null })
+  start_date?: Date;
 
+  @ApiProperty({ example: '2026-10-01', description: 'Subscription end date', required: false })
+  @Column({ type: 'date', nullable: true, default: null })
+  end_date?: Date;
 
-    @ApiProperty6({ example: 9.99, description: 'Price in USD' })
-    @Column6({ type: 'decimal', precision: 10, scale: 2 })
-    price: number;
+  @ApiProperty({ example: '2025-10-01T00:00:00Z', description: 'Subscription creation timestamp' })
+  @CreateDateColumn({ type: 'timestamp' })
+  created_at: Date;
 
+  @ApiProperty({ description: 'User associated with this subscription', type: () => UserEntity })
+  @ManyToOne(() => UserEntity, (user) => user.subscriptions, { eager: true })
+  @JoinColumn({ name: 'user_id' })
+  user: UserEntity;
 
-    @ApiProperty6({ example: '2025-10-01', description: 'Start date' })
-    @Column6({ type: 'date' })
-    start_date: string;
+  @ApiProperty({ description: 'Plan associated with this subscription', type: () => SubscriptionPlanEntity })
+  @ManyToOne(() => SubscriptionPlanEntity, (plan) => plan.subscriptions, { eager: true })
+  @JoinColumn({ name: 'plan_id' })
+  plan: SubscriptionPlanEntity;
 
+  @ApiProperty({ description: 'Payments made for this subscription', type: () => [PaymentEntity], required: false })
+  @OneToMany(() => PaymentEntity, (payment) => payment.subscription, { nullable: true })
+  payments?: PaymentEntity[];
 
-    @ApiProperty6({ example: '2026-10-01', description: 'End date', required: false })
-    @Column6({ type: 'date', nullable: true })
-    end_date?: string;
+  @ApiProperty({ description: 'Coupon applied to this subscription', type: () => CouponEntity, required: false })
+  @ManyToOne(() => CouponEntity, (coupon) => coupon.subscriptions, { nullable: true, eager: true })
+  @JoinColumn({ name: 'coupon_id' })
+  coupon?: CouponEntity;
 
+  @ApiProperty({ example: 2.5, description: 'Amount discounted by coupon', required: false })
+  @Column({ type: 'float', nullable: true, default: 0 })
+  discount_amount?: number;
 
-    @ApiProperty6({ example: true, description: 'Is active' })
-    @Column6({ type: 'boolean', default: true })
-    is_active: boolean;
-
-
-    @ApiProperty6({ example: '2025-10-01T00:00:00Z', description: 'Created at' })
-    @CreateDateColumn6({ type: 'timestamp' })
-    created_at: Date;
-
-    @ApiProperty6({ example: 'User associated with the subscription', description: 'User associated with the subscription' })
-    @ManyToOne(() => UserEntity, (user) => user.subscriptions)
-    user: UserEntity;
-
-    @ApiProperty6({ example: 'Payments associated with the subscription', description: 'Payments associated with the subscription' })
-    @OneToMany(() => PaymentEntity, (payment) => payment.subscription)
-    payments: PaymentEntity[];
+  @ApiProperty({ example: 7.49, description: 'Final subscription price after applying coupon' })
+  @Column({ type: 'float' })
+  final_price: number;
 }
