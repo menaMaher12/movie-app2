@@ -11,7 +11,7 @@ import { Role } from '../../common/decrators/user-role/user-role.decorator';
 import { AuthRoleGuard } from '../../common/guards/role_guard/auth.role.guard';
 import { CurrentUser } from '../../common/decrators/currentuser/currentuser.decorator';
 
-@Controller('api/v1/usercoupon')
+@Controller('usercoupon')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
 export class UserCouponController {
     constructor(private readonly userCouponService: UserCouponService) {}
