@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
 /* eslint-disable prettier/prettier */
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -36,6 +38,7 @@ import { SubscriptionPlanModule } from './moduls/subscription-plan/subscription-
 import { SubscriptionPlanEntity } from './moduls/subscription-plan/entity/subscription-plan.entity';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CustomClassSerializerInterceptor } from './common/interceptor/CustomClassSerializerInterceptor';
+import { dataSourceOptions } from '../db/data-source';
 @Module({
   imports: [
     MovieModule,
@@ -74,37 +77,38 @@ import { CustomClassSerializerInterceptor } from './common/interceptor/CustomCla
         }
       ]
     ),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService): TypeOrmModuleOptions => {
-        return {
-          type: "mysql",
-          host: configService.get<string>('DB_HOST'),
-          port: configService.get<number>('DB_PORT'),
-          username: configService.get<string>('DB_USERNAME'),
-          password: configService.get<string>('DB_PASSWORD'),
-          database: configService.get<string>('DB_NAME'),
-          entities: [
-            UserEntity,
-            MovieEntity,
-            GenreEntity,
-            PeopleEntity,
-            MoviePeopleEntity,
-            SubscriptionEntity,
-            PaymentEntity,
-            CouponEntity,
-            SubscriptionPlanEntity,
-            UserCouponsEntity,
-            RatingEntity,
-          ],
-          synchronize: process.env.NODE_ENV !== 'production',
-        }
-      },
-    }),
+    // TypeOrmModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   useFactory: (configService: ConfigService): TypeOrmModuleOptions => {
+    //     return {
+    //       type: "mysql",
+    //       host: configService.get<string>('DB_HOST'),
+    //       port: configService.get<number>('DB_PORT'),
+    //       username: configService.get<string>('DB_USERNAME'),
+    //       password: configService.get<string>('DB_PASSWORD'),
+    //       database: configService.get<string>('DB_NAME'),
+    //       entities: [
+    //         UserEntity,
+    //         MovieEntity,
+    //         GenreEntity,
+    //         PeopleEntity,
+    //         MoviePeopleEntity,
+    //         SubscriptionEntity,
+    //         PaymentEntity,
+    //         CouponEntity,
+    //         SubscriptionPlanEntity,
+    //         UserCouponsEntity,
+    //         RatingEntity,
+    //       ],
+    //       synchronize: process.env.NODE_ENV !== 'production',
+    //     }
+    //   },
+    // }),
+    TypeOrmModule.forRoot(dataSourceOptions),
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `env/.${process.env.NODE_ENV}.env`,
+      envFilePath: process.env.NODE_ENV !=="production" ? `env/.${process.env.NODE_ENV}.env` : ".env"
     }),
     UserCouponModule,
     UploadModule,
