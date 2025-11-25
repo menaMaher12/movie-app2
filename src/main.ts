@@ -26,7 +26,9 @@ async function bootstrap() {
   const dataSource = app.get(DataSource);
   addTransactionalDataSource(dataSource);
 
-  app.setGlobalPrefix('api/v1');
+  app.setGlobalPrefix('api/v1',{
+     exclude: ['/']
+  });
 
   // Stripe raw body ONLY for webhook
   app.use('/api/v1/payment/webhook',
