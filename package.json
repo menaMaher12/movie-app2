@@ -17,7 +17,12 @@
     "test:watch": "cross-env NODE_ENV=test jest --watch",
     "test:cov": "cross-env NODE_ENV=test jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json --maxWorkers=1"
+    "test:e2e": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json --maxWorkers=1",
+    "typeorm": "npx typeorm -d dist/db/data-source.js",
+    "migration:generate": "npm run build && npx typeorm -d dist/db/data-source.js migration:generate",
+    "migration:create": "npm run build && npx typeorm -d dist/db/data-source.js migration:create",
+    "migration:run": "npm run build && npx typeorm -d dist/db/data-source.js migration:run",
+    "migration:revert": "npm run build && npx typeorm -d dist/db/data-source.js migration:revert"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^2.0.2",
@@ -36,6 +41,7 @@
     "cloudinary": "^1.41.3",
     "cookie-parser": "^1.4.7",
     "cross-env": "^10.1.0",
+    "dotenv": "^17.2.3",
     "ejs": "^3.1.10",
     "helmet": "^8.1.0",
     "multer-storage-cloudinary": "^4.0.0",
