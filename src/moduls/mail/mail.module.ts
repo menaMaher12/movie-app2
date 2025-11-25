@@ -20,7 +20,7 @@ import {EjsAdapter} from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
         },
       },
       template :{
-            dir:join(__dirname,'templates'),
+            dir:join(process.cwd(),'dist/moduls/mail/templates'),
         adapter : new EjsAdapter({inlineCssEnabled:true}),
       }
     }),
