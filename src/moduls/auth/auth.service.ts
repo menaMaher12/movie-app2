@@ -49,12 +49,12 @@ export class AuthService {
     if(!user) {
       throw new UnauthorizedException("User not found after registration");
     }
-    try {
-      if(user.verificationToken)
-        await this.mailService.sendVerificationEmail(user.email,user.firstName, user.verificationToken);
-    } catch (error) {
-      console.error('Error sending verification email:', error);
-    }
+    // try {
+    //   if(user.verificationToken)
+    //     // await this.mailService.sendVerificationEmail(user.email,user.firstName, user.verificationToken);
+    // } catch (error) {
+    //   console.error('Error sending verification email:', error);
+    // }
 
     return {
       access_token: await this.generateToken({
