@@ -10,7 +10,6 @@ export class MailService {
         // Implementation for sending welcome email
         await this.mailService.sendMail({
             to: email,
-            from: 'noreply@yourdomain.com',
             subject: 'Welcome to MovieApp!',
             template: 'emailtemplate',
             context: { name: name, email: email }
@@ -21,7 +20,6 @@ export class MailService {
         const verificationLink = `${process.env.DOMAIN}/?token=${token}&email=${email}`;
         await this.mailService.sendMail({
             to: email,
-            from: 'noreply@yourdomain.com',
             subject: 'Verify Your MovieApp Account',
             template: 'verificationtemplate',
             context: { name: name, verificationLink: verificationLink }
@@ -31,7 +29,6 @@ export class MailService {
     public async sendReminderSubscriptionEmail(email: string, name: string, daysLeft: number): Promise<void> {
         await this.mailService.sendMail({
             to: email,
-            from: 'noreply@yourdomain.com',
             subject: 'Subscription Expiry Reminder',
             template: 'remindersubscriptiontemplate',
             context: { name: name, daysLeft: daysLeft }
@@ -41,7 +38,6 @@ export class MailService {
     public async sendPaymentReceiptEmail(email: string, orderId: string, amount: string): Promise<void> {
         await this.mailService.sendMail({
             to: email,
-            from: 'noreply@yourdomain.com',
             subject: 'Payment Receipt',
             template: 'paymentreceipttemplate',
             context: { orderId: orderId, amount: amount }
