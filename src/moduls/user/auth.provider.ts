@@ -23,8 +23,8 @@ export class AuthProvider {
         const hashPassword = await bcrypt.hash(password, salt);
 
         const verificationToken = randomBytes(32).toString('hex');
-        const isVerify=true
-        const newUser = this.userRepo.create({ ...user, password: hashPassword, verificationToken ,isVerify });
+        const isVerified=true
+        const newUser = this.userRepo.create({ ...user, password: hashPassword, verificationToken ,isVerified});
         await this.userRepo.save(newUser);
         // jwt token generation can be added here for immediate login after registration
         return { userId: newUser.user_id, email: newUser.email, role: newUser.role };
